@@ -298,6 +298,17 @@ bool modifydata(const string& username, const string& password){
        return true;
     }
 }
+bool modifydata(const string& query){
+
+   mysql_query(&mysql, "SET NAMES UTF8"); 
+   if (mysql_query(&mysql, query.c_str())) {
+       return false;
+    }
+   else{
+       return true;
+    }
+}
+
 bool modifydata2(const string& query){
 
    mysql_query(&mysql, "SET NAMES UTF8"); 

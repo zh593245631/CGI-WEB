@@ -1,6 +1,22 @@
-main: login.cgi bulletinz.cgi videoz.cgi studyz.cgi swapz.cgi reg.cgi greg.cgi bulletinzz.cgi studyzz.cgi tourist.cgi
+main: login.cgi bulletinz.cgi videoz.cgi studyz.cgi swapz.cgi reg.cgi greg.cgi bulletinzz.cgi studyzz.cgi tourist.cgi manger.cgi mg.cgi mg2.cgi manger2.cgi manger4.cgi mg4.cgi manger3.cgi mg3.cgi
 login.cgi:login.cc
 	g++ $^ -o $@ -lmysqlcppconn
+manger.cgi:manger.cc
+	g++ $^ -o $@ -lmysqlcppconn -std=c++11
+manger3.cgi:manger3.cc
+	g++ $^ -o $@ -lmysqlcppconn -std=c++11
+mg3.cgi:mg3.cc
+	g++ $^ -o $@ -lmysqlcppconn -std=c++11
+manger4.cgi:manger4.cc
+	g++ $^ -o $@ -lmysqlcppconn -std=c++11
+mg4.cgi:mg4.cc
+	g++ $^ -o $@ -lmysqlcppconn -std=c++11
+manger2.cgi:manger2.cc
+	g++ $^ -o $@ -lmysqlcppconn -std=c++11
+mg.cgi:mg.cc
+	g++ $^ -o $@ -lmysqlcppconn -std=c++11
+mg2.cgi:mg2.cc
+	g++ $^ -o $@ -lmysqlcppconn -std=c++11
 bulletinz.cgi:bulletinz.cc
 	g++ $^ -o $@ -lmysqlcppconn -std=c++11
 bulletinzz.cgi:bulletinzz.cc

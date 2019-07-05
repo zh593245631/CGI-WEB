@@ -30,7 +30,8 @@ div1.innerHTML=txtval;
   口令: <input type = "password" name = "password" required oninvalid="setCustomValidity('请输入密码');" oninput="setCustomValidity('');" /> <br/>
 <br/>
 <div style="padding-left:93px;">
-<input  type = "submit" value = "登陆"/>
+<input  type = "submit" value = "登陆" name = "ret"/>
+<input  type = "submit" value = "haa"/>
 <a  href="/reg.html">注册账号</a><br/>
 </div>
 <select>
@@ -59,6 +60,22 @@ div1.innerHTML=txtval;
 <br/>
 <br/>
 <br/>
+<form id="form1" enctype="multipart/form-data" method="post" action="Upload.aspx">
+      <div class="row">
+                <label for="fileToUpload">Select a File to Upload</label><br>
+                        <input type="file" name="fileToUpload" id="fileToUpload" onchange="fileSelected();">
+                            </div>
+                                <div id="fileName"></div>
+                                    <div id="fileSize"></div>
+                                        <div id="fileType"></div>
+                                            <div class="row">
+                                                      <input type="button" onclick="uploadFile()" value="Upload">
+                                                          </div>
+                                                              <div id="progressNumber"></div>
+</form>
+
+
+
 <br/>
 <br/>
 <br/>

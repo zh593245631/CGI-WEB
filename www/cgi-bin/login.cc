@@ -32,7 +32,6 @@ int main(void)
   Mysql mysql;
   mysql.ConnectDatabase();
   string dbpass;
-  string pass;
   string access;
   //select * from user which username=root;
   mysql.QueryDatabase("user","password","username",username,dbpass);
@@ -99,10 +98,15 @@ int main(void)
                         </body>";
 #endif
   }
-  else if(password==pass&&who=="Admin"){
-                       body = "<body>\r\n\
-                       管理员\r\n\
-                       <a href=\"#\" onClick=\"javascript :history.back(-1);\">返回</a>\r\n";
+  else if(password==dbpass&&who=="Admin"){
+                      body = "<form name = \"input\" action = \"/cgi-bin/manger.cgi\" \
+                      method = \"post\" id = \"form4\">\
+                      <input type=\"text\" style=\"display:none;\" value=\""+ret+"\" name = \"ret\">\
+                      <input type=\"text\" style=\"display:none;\" value=\""+username+"\" name = \"usr\">\
+                      <div style=\"padding-left:110px; padding-top:20px\">\
+                      <input type = \"submit\" value= \"进入管理系统\" style='font-size:40px'>\
+                      </div>\
+                      </form>";
  }
 
 
