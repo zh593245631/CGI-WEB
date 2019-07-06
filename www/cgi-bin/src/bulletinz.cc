@@ -10,7 +10,6 @@ int main(void)
 {
 #if 1
   string header;
-  //string first_line = "HTTP/1.0 200 OK\n";
   string body;
   body.resize(10000);
   char ret[64];
@@ -32,7 +31,7 @@ int main(void)
   mysql.ConnectDatabase();
   string rett = ret;
   vector<vector<string> > m;
-  mysql.QueryDatabase("message",m);
+  mysql.QueryDatabase("select * from message where zd='0' union all select * from message where zd<>'0'",m);
   //cout<<m[0][0]<<endl;
 #if 1
   string html;

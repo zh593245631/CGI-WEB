@@ -9,39 +9,27 @@ using namespace std;
 int main(void)
 {
   string header;
-  //string first_line = "HTTP/1.0 200 OK\n";
   string body;
   body.resize(10000);
-  char gg[64];
-  char ret[64];
-  char user[64];
+
+#if 1
   char *info=NULL;
   int lenstr=0;
-  /*
-   * Get the data by post method from index.html
-   */
   lenstr=atoi(getenv("CONTENT_LENGTH"));
   info=(char *)malloc(lenstr+1);
   fread(info,1,lenstr,stdin);
-  string data = info;       
-  sscanf(info,"ret=%[^&]&gg=%[^&]&usr=%[^&]",ret,gg,user);
+#endif//获取请求
+  char gg[64];//公告
+  char ret[64];//身份标识
+  char user[64];//用户名
+
+  sscanf(info,"ret=%[^&]&gg=%[^&]&usr=%[^&]",ret,gg,user);//解析请求
   free(info);
+
+//转换string 方便操作
   string rett = ret;
   string m = gg;
   if(rett == "ret"|| rett == "yk"){
-    //cout<<"success"<<endl;
-#if 0
-         body = "<body background=\"http://212.129.243.64/bj.png\"\r\n\
-                 style=\" background-repeat:no-repeat;\r\n\
-                 background-size:100% 100%;\r\n\
-                 background-attachment: fixed;\">\r\n\
-                 成功\r\n\
-                 <a href=\"http://212.129.243.64/\">hehe</a>\r\n\
-                 <a href=\"#\" onClick=\"javascript :history.back(-1);\">返回</a>\r\n\
-                 </body>";
-
-#endif
-#if 1
 
                 body = "<body background=\"http://212.129.243.64/bj.png\"\
                         style=\" background-repeat:no-repeat;background-size:100% 100%;\
@@ -88,46 +76,6 @@ int main(void)
                         </div>\
                         </div>\
                         </body>";
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#endif
   }
   else{
          body = "<body>\r\n\

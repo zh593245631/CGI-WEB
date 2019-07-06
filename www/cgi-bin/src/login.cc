@@ -8,49 +8,37 @@ using namespace std;
 int main(void)
 {
   string header;
-  //string first_line = "HTTP/1.0 200 OK\n";
   string body;
   body.resize(10000);
-  char Who[64];
-  char user[64];
-  char passwd[64];
+#if 1
   char *info=NULL;
   int lenstr=0;
-  /*
-   * Get the data by post method from index.html
-   */
   lenstr=atoi(getenv("CONTENT_LENGTH"));
   info=(char *)malloc(lenstr+1);
   fread(info,1,lenstr,stdin);
-  string data = info;       
-  sscanf(info,"Who=%[^&]&username=%[^&]&password=%[^&]",Who,user,passwd);
+#endif//获取请求
+
+
+  char Who[64];//用户/管理员
+  char user[64];//用户名
+  char passwd[64];//用户输入的密码
+
+  sscanf(info,"Who=%[^&]&username=%[^&]&password=%[^&]",Who,user,passwd);//解析数据
   free(info);
-  string ret = "ret";
+
+  string ret = "ret";//身份标识
   string username = user;
   string password = passwd;
   string who = Who;
+
   Mysql mysql;
   mysql.ConnectDatabase();
-  string dbpass;
-  string access;
-  //select * from user which username=root;
-  mysql.QueryDatabase("user","password","username",username,dbpass);
-  mysql.QueryDatabase("user","access","username",username,access);
-  if( password == dbpass &&who == "Common"&& access > "0"){
-    //cout<<"success"<<endl;
-    sleep(1);
-#if 0
-         body = "<body background=\"http://212.129.243.64/bj.png\"\r\n\
-                 style=\" background-repeat:no-repeat;\r\n\
-                 background-size:100% 100%;\r\n\
-                 background-attachment: fixed;\">\r\n\
-                 成功\r\n\
-                 <a href=\"http://212.129.243.64/\">hehe</a>\r\n\
-                 <a href=\"#\" onClick=\"javascript :history.back(-1);\">返回</a>\r\n\
-                 </body>";
-
-#endif
-#if 1
+  vector<vector<string> > m;
+  string qu;
+  qu = "select * from user where username = '" + username+"'";
+  mysql.QueryDatabase(qu,m);
+  //m.size()表示有数据，不判断会导致越界
+  if(m.size()&& password == m[0][1] &&who == "Common"&& m[0][2] > "0"){
 
                 body = "<body background=\"http://212.129.243.64/bj.png\"\
                         style=\" background-repeat:no-repeat;background-size:100% 100%;\
@@ -96,9 +84,9 @@ int main(void)
                         </div>\
                         </div>\
                         </body>";
-#endif
   }
-  else if(password==dbpass&&who=="Admin"){
+  else if(m.size()&&password== m[0][1]&&who=="Admin"){
+                      //管理员
                       body = "<form name = \"input\" action = \"/cgi-bin/manger.cgi\" \
                       method = \"post\" id = \"form4\">\
                       <input type=\"text\" style=\"display:none;\" value=\""+ret+"\" name = \"ret\">\
@@ -108,38 +96,14 @@ int main(void)
                       </div>\
                       </form>";
  }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   else{
-
+        //密码错误
          body = "<body>\r\n\
                 用户名或密码错误\r\n\
                 <a href=\"#\" onClick=\"javascript :history.back(-1);\">返回</a>\r\n";
   }
-  header += "Content-type: text/html;charset=utf-8\r\n\r\n";
+
+  header += "Content-type: text/html;charset=utf-8\r\n\r\n";//必须加这句
   cout<<header+body<<endl;
   return 0;
 } 

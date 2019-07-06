@@ -9,7 +9,6 @@ using namespace std;
 int main(void)
 {
   string header;
-  //string first_line = "HTTP/1.0 200 OK\n";
   string body;
   body.resize(10000);
   char name[64];
@@ -17,17 +16,19 @@ int main(void)
   char ret[64];
   char So[64];
   char user[64];
+
+#if 1
   char *info=NULL;
   int lenstr=0;
-  /*
-   * Get the data by post method from index.html
-   */
   lenstr=atoi(getenv("CONTENT_LENGTH"));
   info=(char *)malloc(lenstr+1);
   fread(info,1,lenstr,stdin);
-  string data = info;       
+#endif//
+
   sscanf(info,"Who=%[^&]&ret=%[^&]&name=%[^&]&so=%[^&]&usr=%[^&]",Who,ret,name,So,user);
   free(info);
+
+//const char* 转为string 方便操作
   string rett = ret;
   string m = name;
   string who = Who;
@@ -35,8 +36,8 @@ int main(void)
   vector<vector<string> > v;
   Mysql mysql;
   mysql.ConnectDatabase();
-  string Quer1 = "select content, pDate,visit  from resource where "+who+"= '"+m+"' order by "+so+" desc";
-  mysql.QueryDatabase3(Quer1,v);
+  string qu = "select content, pDate,visit  from resource where "+who+"= '"+m+"' order by "+so+" desc";
+  mysql.QueryDatabase(qu,v);
   string html;
   html.resize(1000);
   size_t line = v.size();
@@ -56,19 +57,6 @@ int main(void)
      html += "页</a>";
   }
   if(rett == "ret"|| rett == "yk"){
-    //cout<<"success"<<endl;
-#if 0
-         body = "<body background=\"http://212.129.243.64/bj.png\"\r\n\
-                 style=\" background-repeat:no-repeat;\r\n\
-                 background-size:100% 100%;\r\n\
-                 background-attachment: fixed;\">\r\n\
-                 成功\r\n\
-                 <a href=\"http://212.129.243.64/\">hehe</a>\r\n\
-                 <a href=\"#\" onClick=\"javascript :history.back(-1);\">返回</a>\r\n\
-                 </body>";
-
-#endif
-#if 1
 
                 body = "<body background=\"http://212.129.243.64/bj.png\"\
                         style=\" background-repeat:no-repeat;background-size:100% 100%;\
@@ -127,35 +115,6 @@ function showpage(page){\
                         </div>\
                         </body>";
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#endif
   }
   else{
          body = "<body>\r\n\

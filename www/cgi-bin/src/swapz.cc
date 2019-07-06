@@ -9,55 +9,45 @@ using namespace std;
 int main(void)
 {
   string header;
-  //string first_line = "HTTP/1.0 200 OK\n";
   string body;
   body.resize(10000);
-  char ret[64];
-  char user[64];
+
+#if 1
   char *info=NULL;
   int lenstr=0;
-  /*
-   * Get the data by post method from index.html
-   */
   lenstr=atoi(getenv("CONTENT_LENGTH"));
   info=(char *)malloc(lenstr+1);
   fread(info,1,lenstr,stdin);
-  char sw[1024];
+#endif//
+
+  char ret[64];//身份标识
+  char user[64];//用户名
+  char sw[1024];//交流内容 ---汉字会被转码 未解决
   sscanf(info,"ret=%[^&]&usr=%[^&]&swap=%[^&]",ret,user,sw);
   free(info);
-  string usr = user;
+
   Mysql mysql;
   mysql.ConnectDatabase();
+  
+  string usr = user;
   string sw2 = sw;
   if(sw2.size()>0){
+    //插入留言 //待审核
     string c = "insert into comment(CID,message) values('"+usr+"','"+sw2+"')";
-    mysql.InsertData3(c);
+    mysql.modifydata(c);
   } 
   string rett = ret;
   vector<vector<string> > m;
-  mysql.QueryDatabase3("select CID,posttime,message from comment where Ispass = 1 order by posttime desc",m);
-  //cout<<m[0][0]<<endl;
+  mysql.QueryDatabase("select CID,posttime,message from comment where Ispass = 1 order by posttime desc",m);
   string html;
   html.resize(1000);
-  for(int i = 0; i < m.size()&& i < 7; ++i)
+  //最多显示7条
+  for(size_t i = 0; i < m.size()&& i < 7; ++i)
   {
      html +="<p>"+m[i][0]+":"+m[i][2]+"<br/>"+m[i][1]+"<p>";
   }
 
   if(rett == "ret"){
-    //cout<<"success"<<endl;
-#if 0
-         body = "<body background=\"http://212.129.243.64/bj.png\"\r\n\
-                 style=\" background-repeat:no-repeat;\r\n\
-                 background-size:100% 100%;\r\n\
-                 background-attachment: fixed;\">\r\n\
-                 成功\r\n\
-                 <a href=\"http://212.129.243.64/\">hehe</a>\r\n\
-                 <a href=\"#\" onClick=\"javascript :history.back(-1);\">返回</a>\r\n\
-                 </body>";
-
-#endif
-#if 1
 
                 body = "<body background=\"http://212.129.243.64/bj.png\"\
                         style=\" background-repeat:no-repeat;background-size:100% 100%;\
@@ -112,46 +102,6 @@ int main(void)
                         </div>\
                         </div>\
                         </body>";
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#endif
   }
   else{
          body = "<body>\r\n\
