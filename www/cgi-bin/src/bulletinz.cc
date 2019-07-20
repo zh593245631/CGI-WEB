@@ -12,10 +12,8 @@ int main(void)
   string header;
   string body;
   body.resize(10000);
-
   char ret[64];
   char user[64];
-
   char *info=NULL;
   int lenstr=0;
   /*
@@ -28,18 +26,17 @@ int main(void)
   sscanf(info,"ret=%[^&]&usr=%[^&]",ret,user);
   free(info);
 #endif
-
   string usr = user;
-  string rett = ret;
   Mysql mysql;
   mysql.ConnectDatabase();
+  string rett = ret;
   vector<vector<string> > m;
   mysql.QueryDatabase("select * from message where zd='0' union all select * from message where zd<>'0'",m);
-
+  //cout<<m[0][0]<<endl;
 #if 1
   string html;
   html.resize(1000);
-  for(int i = 1; i < 7; ++i)
+  for(size_t i = 0; i < m.size() &&i < 7; ++i)
   {
  html +="<form name = \"input1\"\
                         action = \"/cgi-bin/bulletinzz.cgi\" method = \"post\" id = \"form5\">\
@@ -52,7 +49,6 @@ int main(void)
                         </div>\
                         </form>";
   }
-
   if(rett == "ret"||rett == "yk"){
     //cout<<"success"<<endl;
 #if 0

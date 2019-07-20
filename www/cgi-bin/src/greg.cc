@@ -3,6 +3,7 @@
 #include<cstdlib>
 #include<unistd.h>
 #include<string>
+#include<vector>
 #include<iostream>
 using namespace std;
 int main(void)
@@ -30,14 +31,17 @@ int main(void)
   string sd = s;
   Mysql mysql;
   mysql.ConnectDatabase();
-  string dbpass;
-  if(mysql.QueryDatabase("user","password","username",username,dbpass)){
+  string qu = "select username from user where username ='"+username+"'";
+  vector<vector<string> > m;
+  mysql.QueryDatabase(qu,m);
+  if(m.size()){
        body = "<body>\r\n\
                 该用户名已被注册\r\n\
                <a href=\"#\" onClick=\"javascript :history.back(-1);\">返回</a>";
   }
   else if(sd == "zzh"){
-       mysql.InsertData("user",username,password,3);
+       qu = "insert into user(username,password) values('"+username+"','"+password+"')";
+       mysql.modifydata(qu);
        body = "<body>\r\n\
               注册成功\r\n\
                <a href=\"http://212.129.243.64/\">返回登陆</a>";

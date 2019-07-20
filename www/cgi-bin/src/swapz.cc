@@ -22,15 +22,14 @@ int main(void)
 
   char ret[64];//身份标识
   char user[64];//用户名
-  char sw[1024];//交流内容 ---汉字会被转码 未解决
+  char sw[1024];//交流内容 ---汉字会被转码
   sscanf(info,"ret=%[^&]&usr=%[^&]&swap=%[^&]",ret,user,sw);
   free(info);
-
   Mysql mysql;
   mysql.ConnectDatabase();
-  
-  string usr = user;
+
   string sw2 = sw;
+  string usr = user;
   if(sw2.size()>0){
     //插入留言 //待审核
     string c = "insert into comment(CID,message) values('"+usr+"','"+sw2+"')";
